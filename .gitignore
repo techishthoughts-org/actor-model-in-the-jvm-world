@@ -48,4 +48,5 @@ build/
 .DS_Store
 
 ### Scala ###
-.bsp/
+.bsp/# Bloop configuration files (generated)
+*/.bloop/
