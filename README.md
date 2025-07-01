@@ -282,6 +282,7 @@ Complete real-time multi-user chat system with WebSocket support:
 - **Actor-Based Backend**: Fault-tolerant message routing and state management
 
 **Key Features:**
+
 - **WebSocket Communication**: Bidirectional real-time messaging
 - **Room Broadcasting**: Messages delivered to all room participants
 - **User State Tracking**: Online/offline status and room memberships
@@ -296,6 +297,7 @@ The system provides both WebSocket for real-time communication and HTTP endpoint
 #### WebSocket Chat Protocol
 
 **Connection Endpoint:**
+
 ```
 ws://localhost:8080/chat/ws/{username}
 ```
@@ -473,6 +475,88 @@ akka {
 }
 ```
 
+## 🎨 Friendly Logging System
+
+Both implementations feature a **beautiful, user-friendly logging system** with emojis, colors, and descriptive messages that make debugging and monitoring enjoyable.
+
+### 🌟 Visual Features
+
+- **🎭 Demo Actors**: Green colored with theater emoji for application logic
+- **⚙️ Akka System**: Blue colored with gear emoji for framework messages
+- **💬 Chat System**: Magenta colored with chat emoji for chat-related activities
+- **🔥 Error Logs**: Highlighted error appender for critical issues
+
+### 📝 Message Categories
+
+- **🚀 Actor Lifecycle**: Launch emoji for actor startup/shutdown
+- **🔢 Numeric Processing**: Number emoji for integer/decimal message handling
+- **📝 Text Processing**: Document emoji for string message handling
+- **💬 Communication**: Chat emoji for help requests and responses
+- **🔄 State Transitions**: Arrow indicators showing status changes (e.g., `IDLE → WAITING_RESPONSE`)
+- **✅ Success Operations**: Check mark for successful operations
+- **❌ Error Conditions**: Cross mark for error states
+- **⚠️ Warnings**: Warning emoji for unexpected situations
+- **📊 Metrics**: Chart emoji for performance tracking
+
+### 🎯 Example Log Output
+
+**Actor Lifecycle:**
+
+```
+🎭 17:33:02 INFO  [SimpleActorSender] - 🚀 Actor 'simpleSender' started and ready to process messages
+🎭 17:33:02 INFO  [StatefulActor] - 🏗️ Stateful worker 'Worker1' initialized with status: AVAILABLE
+```
+
+**Message Processing:**
+
+```
+🎭 17:33:02 INFO  [SimpleActorSender] - 🔢 Received integer value: 42 - Processing completed
+🎭 17:33:02 INFO  [SimpleActorSender] - 📝 Received text message: 'Hello Akka!' - Processing completed
+```
+
+**State Management:**
+
+```
+🎭 17:33:06 INFO  [StatefulActor] - 💬 Help request received: 'Need help with Java Akka!'
+🎭 17:33:06 INFO  [StatefulActor] - 🔄 Status transition: AVAILABLE → WAITING_RESPONSE
+🎭 17:33:06 INFO  [StatefulActor] - ✅ Responding with offer to help
+```
+
+**System Messages:**
+
+```
+⚙️  17:33:19 INFO  [AKKA] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+```
+
+### 📋 Logging Configuration
+
+Both projects use **Logback** with custom appenders for different log categories:
+
+**Console Output:**
+
+- Colored, emoji-rich console logging for development
+- Separate appenders for demo actors, chat system, and Akka system
+- Suppressed verbose framework logs for cleaner output
+
+**File Output:**
+
+- Detailed file logging for production debugging
+- Separate files for different log levels and components
+- Rolling log files with retention policies
+
+**Configuration Example:**
+
+```xml
+<!-- Demo actors appender with custom formatting -->
+<appender name="DEMO_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>🎭 %d{HH:mm:ss} %highlight(%-5level) %green([%logger{0}]) - %msg%n</pattern>
+        </layout>
+    </encoder>
+</appender>
+```
+
 ## 🏃‍♂️ Expected Output
 
 ### Java Example Output
@@ -483,20 +567,26 @@ akka {
 
 📋 Running Complete Actor Pattern Demonstrations...
 
-🎯 Running Complete Actor Pattern Demonstrations
-============================================================
-
 1️⃣ Simple Fire-and-Forget Pattern:
 📨 Fire-and-Forget Pattern Demonstration
 📨 Sent messages to SimpleActorSender (fire-and-forget pattern)
+🎭 17:33:02 INFO  [SimpleActorSender] - 🚀 Actor 'simpleSender' started and ready to process messages
+🎭 17:33:02 INFO  [SimpleActorSender] - 🔢 Received integer value: 42 - Processing completed
+🎭 17:33:02 INFO  [SimpleActorSender] - 📝 Received text message: 'Hello Akka!' - Processing completed
+🎭 17:33:02 INFO  [SimpleActorSender] - 🔢 Received decimal value: 3.14 - Processing completed
 
 2️⃣ Request-Response Ask Pattern:
 🔄 Request-Response Pattern (Ask) Demonstration
+🎭 17:33:04 INFO  [SimpleActorAsk] - SimpleActorAsk 'simpleAsk' started
 📩 Ask response: IntMessage[value=123]
 📩 Ask response: StringMessage[value=Ask pattern works!]
 
 3️⃣ Stateful Actor Pattern:
 🔄 Stateful Worker Demonstration
+🎭 17:33:06 INFO  [StatefulActor] - 🏗️ Stateful worker 'StatefulWorker1' initialized with status: AVAILABLE
+🎭 17:33:06 INFO  [StatefulActor] - 💬 Help request received: 'Need help with Java Akka!'
+🎭 17:33:06 INFO  [StatefulActor] - 🔄 Status transition: AVAILABLE → WAITING_RESPONSE
+🎭 17:33:06 INFO  [StatefulActor] - ✅ Responding with offer to help
 
 4️⃣ Stateless Actor with Behavior Switching:
 🔄 Stateless Actor Behavior Switching Demonstration
@@ -504,18 +594,23 @@ akka {
 5️⃣ Health Check System:
 🏥 Health Check System Demonstration
 🏥 Registered actors for health monitoring
+🎭 17:33:12 INFO  [HealthCheckActor] - HealthCheckActor started
 
 6️⃣ Metrics Collection:
 📊 Metrics Collection Demonstration
 📊 Recorded sample metrics
+🎭 17:33:15 INFO  [MetricsActor] - MetricsActor started
 
 7️⃣ Supervision Strategy:
 👨‍💼 Supervision Strategy Demonstration
 👨‍💼 Created child actor under supervision
+🎭 17:33:17 INFO  [SupervisorActor] - SupervisorActor started
 
 ✅ All demonstrations completed successfully!
 🎉 Java 21 Sealed Classes + Records equivalent to Scala sealed traits + case classes
 💎 Complete Actor Model implementation with modern Java features
+⚙️  17:33:19 INFO  [AKKA] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+🎭 17:33:19 INFO  [SimpleActorSender] - 🛑 Actor 'simpleSender' stopped gracefully
 ```
 
 ### Scala Example Output
@@ -528,30 +623,40 @@ akka {
 
 1️⃣ Simple Actor Patterns:
 🔄 Stateful Worker Demonstration
-📨 Processing message: IntMessage(42)
-📊 Current state: 42
+🎭 17:22:25 INFO  [SimpleActorSender] - 🚀 Actor 'simpleSender' started and ready to process messages
+🎭 17:22:25 INFO  [SimpleActorSender] - 🔢 Received integer value: 42 - Processing completed
+🎭 17:22:25 INFO  [SimpleActorSender] - 📝 Received text message: 'Hello Scala!' - Processing completed
+🎭 17:22:25 INFO  [StatefulActor] - 🏗️ Stateful worker 'Gabriel' initialized with status: Idle
 
 2️⃣ Chat System Demonstration:
 🗣️  Chat System Demo Starting...
+💬 17:22:25 INFO  [CHAT] - 👥 Creating Users...
+💬 17:22:25 INFO  [CHAT] - ✅ User created: Alice (ID: user_123...)
+💬 17:22:25 INFO  [CHAT] - ✅ User created: Bob (ID: user_124...)
 
-👥 Creating Users...
-✅ User created: Alice (ID: user_123...)
-✅ User created: Bob (ID: user_124...)
+💬 17:22:25 INFO  [CHAT] - 🏠 Creating Chat Rooms...
+💬 17:22:25 INFO  [CHAT] - ✅ Room created: General (ID: room_123...)
 
-🏠 Creating Chat Rooms...
-✅ Room created: General (ID: room_123...)
+💬 17:22:25 INFO  [CHAT] - 💬 Users joining rooms...
+💬 17:22:25 INFO  [CHAT] - ✅ Alice joined General room
+💬 17:22:25 INFO  [CHAT] - ✅ Bob joined General room
 
-💬 Users joining rooms...
-✅ Alice joined General room
-✅ Bob joined General room
+💬 17:22:25 INFO  [CHAT] - 📤 Sending messages...
+💬 17:22:25 INFO  [CHAT] - 💬 Alice: Hello everyone!
+💬 17:22:25 INFO  [CHAT] - 💬 Bob: Hi Alice! How are you?
 
-📤 Sending messages...
-💬 Alice: Hello everyone!
-💬 Bob: Hi Alice! How are you?
+3️⃣ Stateful Actor Communication:
+🎭 17:22:25 INFO  [StatefulActor] - 💬 Help request received: 'Rafael, could you help me ?'
+🎭 17:22:25 INFO  [StatefulActor] - 🔄 Status transition: Idle → WaitingResponse
+🎭 17:22:25 INFO  [StatefulActor] - ✅ Responding with offer to help
+🎭 17:22:25 INFO  [StatefulActor] - 🤝 Help response received: 'I will help you!'
+🎭 17:22:25 INFO  [StatefulActor] - 🔄 Status transition: WaitingResponse → InMeeting
 
 ✅ All demonstrations completed successfully!
 🎉 Scala 3 sealed traits + case classes with comprehensive actor patterns
 💎 Complete Actor Model implementation with modern Scala features
+⚙️  17:22:26 INFO  [AKKA] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+🎭 17:22:26 INFO  [StatefulActor] - 🛑 Actor 'Gabriel' stopped gracefully
 ```
 
 ## 🔧 Development
