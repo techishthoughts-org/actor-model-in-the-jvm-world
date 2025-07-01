@@ -101,7 +101,11 @@ cd java-example
 mvn clean compile exec:java
 ```
 
-### WebSocket Chat Server (Scala Only)
+### WebSocket Chat System
+
+The project includes WebSocket chat capabilities with different implementation levels:
+
+#### Scala WebSocket Chat Server (Full Implementation)
 
 The Scala example includes a complete WebSocket chat system with real-time multi-user support:
 
@@ -134,6 +138,37 @@ sbt "runMain demo.WebSocketChatClient"
 # Run the core actor chat demo
 sbt "runMain demo.Main"
 ```
+
+#### Java WebSocket Chat Server (Foundation)
+
+The Java example provides HTTP server foundation with WebSocket infrastructure setup:
+
+```bash
+cd java-example
+mvn clean compile exec:java -Dexec.mainClass="demo.WebSocketChatServer"
+```
+
+**Server Endpoints (Java):**
+
+- **Host**: `localhost:8081` *(port 8081 to avoid conflict with Scala)*
+- **Chat Interface**: `http://localhost:8081/`
+- **API Health Check**: `http://localhost:8081/api/health`
+- **API Info**: `http://localhost:8081/api/info`
+
+**Java Implementation Features:**
+
+- ☕ **Java 21** with modern language features
+- 🎭 **Akka HTTP 10.2.10** server framework
+- 🏗️ **Actor Model** foundation with Akka actors
+- 📦 **Maven** build system
+- 🔗 **HTTP endpoint** infrastructure ready for WebSocket expansion
+
+**Language Comparison:**
+
+- Compare `http://localhost:8080` (Scala) vs `http://localhost:8081` (Java)
+- Both use the same Akka actor framework with language-specific implementations
+- Scala version demonstrates full WebSocket chat functionality
+- Java version shows foundational HTTP server setup for expansion
 
 ### Running Tests
 
