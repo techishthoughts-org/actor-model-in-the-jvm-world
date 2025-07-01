@@ -16,6 +16,8 @@ This project demonstrates key concepts of the Actor Model through practical exam
 - **System Monitoring**: Health checks and metrics collection
 - **Modern Language Features**: Sealed traits/classes, records, pattern matching
 - **Cross-Language Comparison**: Equivalent implementations showcasing language paradigms
+- **WebSocket Chat System**: Real-time multi-user chat with actor-based backend
+- **HTTP/WebSocket Infrastructure**: Complete web server with bidirectional communication
 
 ## 🛠️ Technology Stack
 
@@ -42,7 +44,10 @@ actor-model-with-akka/
 ├── scala-example/          # Scala 3 implementation
 │   ├── src/main/scala/demo/
 │   │   ├── actors/         # Actor implementations
-│   │   ├── chat/          # Chat system
+│   │   ├── chat/          # Chat system with WebSocket support
+│   │   ├── http/          # HTTP routes and WebSocket endpoints
+│   │   │   ├── routes/    # WebSocket chat routes
+│   │   │   └── models/    # WebSocket message models
 │   │   └── messages/      # Message types (sealed traits)
 │   └── build.sbt
 ├── java-example/           # Java 21 implementation
@@ -61,6 +66,7 @@ graph TD
     A --> C[HealthCheckActor]
     A --> D[MetricsActor]
     A --> E[ChatSystem]
+    A --> W[WebSocketChatServer]
 
     B --> F[SimpleActorSender]
     B --> G[SimpleActorAsk]
@@ -70,6 +76,13 @@ graph TD
     E --> J[UserManagement]
     E --> K[ChatRooms]
     E --> L[MessageRouting]
+
+    W --> M[HTTP Routes]
+    W --> N[WebSocket Endpoints]
+    W --> O[Static File Serving]
+
+    N --> E
+    M --> E
 ```
 
 ## 🚀 Getting Started
@@ -88,20 +101,39 @@ cd java-example
 mvn clean compile exec:java
 ```
 
-### HTTP Server (Scala Only)
+### WebSocket Chat Server (Scala Only)
 
-The Scala example includes HTTP API infrastructure. To run the HTTP server:
+The Scala example includes a complete WebSocket chat system with real-time multi-user support:
 
 ```bash
 cd scala-example
-sbt "runMain demo.http.HttpServerApp"
+sbt "runMain demo.WebSocketChatServer"
 ```
 
-**Server Details:**
+**Server Endpoints:**
 
 - **Host**: `localhost:8080`
-- **API Base**: `http://localhost:8080/api`
-- **WebSocket**: `ws://localhost:8080/ws/chat/{userId}`
+- **Chat Interface**: `http://localhost:8080/`
+- **WebSocket Endpoint**: `ws://localhost:8080/chat/ws/{username}`
+- **API Health Check**: `http://localhost:8080/api/health`
+- **API Info**: `http://localhost:8080/api/info`
+
+**Multi-User Testing:**
+
+1. Open `http://localhost:8080` in multiple browser tabs
+2. Set different usernames in each tab (e.g., Alice, Bob, Charlie)
+3. Connect all users and join the same room (e.g., "general")
+4. Start sending messages to test real-time communication
+
+**Command Line Testing:**
+
+```bash
+# Run the WebSocket client simulation
+sbt "runMain demo.WebSocketChatClient"
+
+# Run the core actor chat demo
+sbt "runMain demo.Main"
+```
 
 ### Running Tests
 
@@ -203,91 +235,95 @@ Implements fault tolerance patterns:
 - Error tracking and reporting
 - Automatic metrics reporting
 
-### 6. **Chat System** *(Scala Only)*
+### 6. **WebSocket Chat System** *(Scala Only)*
 
-Complete Slack-like chat implementation:
+Complete real-time multi-user chat system with WebSocket support:
 
-- **User Management**: Create and manage users
-- **Room Management**: Create and join chat rooms
-- **Real-time Messaging**: Broadcast messages to room participants
+- **User Management**: Create and manage chat users with connection tracking
+- **Room Management**: Create and join multiple chat rooms
+- **Real-time Messaging**: WebSocket-based instant message delivery
+- **Multi-User Support**: Concurrent users with real-time updates
+- **Web Interface**: Complete HTML5/JavaScript client with modern UI
+- **Actor-Based Backend**: Fault-tolerant message routing and state management
 
-### 7. **HTTP API** *(Scala Only)*
+**Key Features:**
+- **WebSocket Communication**: Bidirectional real-time messaging
+- **Room Broadcasting**: Messages delivered to all room participants
+- **User State Tracking**: Online/offline status and room memberships
+- **Connection Management**: Graceful handling of connect/disconnect events
+- **Message History**: Room message persistence and retrieval
+- **Emoji Support**: Full Unicode and emoji message support
 
-RESTful API endpoints for chat system integration:
+### 7. **WebSocket API & HTTP Endpoints** *(Scala Only)*
 
-#### User Management Endpoints
+The system provides both WebSocket for real-time communication and HTTP endpoints for system monitoring:
 
-```http
-POST /api/users
-Content-Type: application/json
+#### WebSocket Chat Protocol
 
+**Connection Endpoint:**
+```
+ws://localhost:8080/chat/ws/{username}
+```
+
+**Message Types:**
+
+```json
+// Join a chat room
 {
-  "username": "alice"
+  "type": "joinRoom",
+  "roomName": "general"
 }
-```
 
-```http
-GET /api/users
-GET /api/users/{userId}
-```
-
-#### Room Management Endpoints
-
-```http
-POST /api/rooms
-Content-Type: application/json
-
+// Send a message
 {
-  "roomName": "Project Alpha"
-}
-```
-
-```http
-GET /api/rooms
-GET /api/rooms/{roomId}
-```
-
-#### Room Operations
-
-```http
-POST /api/rooms/{roomId}/join
-Content-Type: application/json
-
-{
-  "userId": "user_123"
-}
-```
-
-```http
-POST /api/rooms/{roomId}/leave
-Content-Type: application/json
-
-{
-  "userId": "user_123"
-}
-```
-
-#### Messaging Endpoints
-
-```http
-POST /api/rooms/{roomId}/messages
-Content-Type: application/json
-
-{
-  "userId": "user_123",
+  "type": "sendMessage",
+  "roomName": "general",
   "content": "Hello everyone!"
 }
+
+// List available rooms
+{
+  "type": "listRooms"
+}
+
+// List online users
+{
+  "type": "listUsers"
+}
 ```
 
-```http
-GET /api/rooms/{roomId}/messages?limit=50
+**Response Types:**
+
+```json
+// Room joined successfully
+{
+  "type": "joinedRoom",
+  "roomName": "general",
+  "message": "Alice joined general"
+}
+
+// Message received
+{
+  "type": "messageReceived",
+  "roomName": "general",
+  "username": "Bob",
+  "content": "Hello everyone!",
+  "timestamp": 1625097600000
+}
+
+// Room list response
+{
+  "type": "roomList",
+  "rooms": ["general", "project-alpha"]
+}
 ```
 
-#### WebSocket Connection
+#### HTTP Monitoring Endpoints
 
 ```http
-GET /ws/chat/{userId}
-Upgrade: websocket
+GET /api/health          # System health check
+GET /api/info           # Server information
+GET /                   # WebSocket chat interface
 ```
 
 ## 🔬 Language Feature Comparison
