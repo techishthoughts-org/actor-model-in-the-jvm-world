@@ -5,118 +5,111 @@
     <property name="LOG_HOME" value="logs" />
     <property name="APP_NAME" value="actor-model-with-akka" />
 
-    <!-- Define log pattern -->
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36}] - %msg%n"/>
-    <property name="ACTOR_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%-5level] [%thread] [%X{akkaSource}] %logger{36} - %msg%n"/>
-
-    <!-- Console appender with colored output -->
+    <!-- Console appender with friendly formatting -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n</pattern>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{HH:mm:ss} %highlight(%-5level) %cyan([%15.15thread]) %yellow(%logger{0}) - %msg%n</pattern>
+            </layout>
         </encoder>
     </appender>
 
-    <!-- File appender for general logs -->
+    <!-- File appender with detailed formatting -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${APP_NAME}.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %msg%n</pattern>
         </encoder>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <totalSizeCap>300MB</totalSizeCap>
         </rollingPolicy>
     </appender>
 
+    <!-- Demo actors appender with custom formatting -->
+    <appender name="DEMO_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>🎭 %d{HH:mm:ss} %highlight(%-5level) %green([%logger{0}]) - %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- Akka system appender -->
+    <appender name="AKKA_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>⚙️  %d{HH:mm:ss} %highlight(%-5level) %blue([AKKA]) - %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- Chat system appender -->
+    <appender name="CHAT_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>💬 %d{HH:mm:ss} %highlight(%-5level) %magenta([CHAT]) - %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
     <!-- Separate appender for actor-specific logs -->
     <appender name="ACTOR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/actors.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{akkaSource}] - %msg%n</pattern>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %msg%n</pattern>
         </encoder>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/actors.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>5MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <fileNamePattern>${LOG_HOME}/actors.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>15</maxHistory>
             <totalSizeCap>100MB</totalSizeCap>
         </rollingPolicy>
-
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
     </appender>
 
     <!-- Error appender for critical issues -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/errors.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%xException</pattern>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %msg%n%xException</pattern>
         </encoder>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/errors.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
             <totalSizeCap>500MB</totalSizeCap>
         </rollingPolicy>
-
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
         </filter>
     </appender>
 
-    <!-- Async appender for better performance -->
-    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="FILE" />
-        <queueSize>512</queueSize>
-        <discardingThreshold>0</discardingThreshold>
-        <includeCallerData>false</includeCallerData>
-    </appender>
-
-    <!-- Specific logger for demo actors -->
-    <logger name="demo.actors" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ACTOR_FILE" />
-    </logger>
-
-    <!-- Akka specific loggers -->
-    <logger name="akka" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
-    </logger>
-
-    <logger name="akka.actor.ActorSystemImpl" level="INFO" />
-    <logger name="akka.event.slf4j.Slf4jLogger" level="INFO" />
-
     <!-- Root logger -->
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ASYNC_FILE" />
-        <appender-ref ref="ERROR_FILE" />
+        <appender-ref ref="FILE" />
     </root>
 
-        <!-- Environment-specific configurations can be added here -->
-    <!-- Use conditional processing based on system properties -->
-    <!-- Example: -Dlogback.profile=dev -->
+    <!-- Demo actors logging with custom appender -->
+    <logger name="demo.actors" level="DEBUG" additivity="false">
+        <appender-ref ref="DEMO_CONSOLE" />
+        <appender-ref ref="ACTOR_FILE" />
+    </logger>
 
-    <!-- Uncomment for development profile -->
-    <!--
-    <if condition='property("logback.profile").equals("dev")'>
-        <then>
-            <root level="DEBUG">
-                <appender-ref ref="CONSOLE" />
-            </root>
-        </then>
-    </if>
-    -->
+    <!-- Chat system logging -->
+    <logger name="demo.chat" level="DEBUG" additivity="false">
+        <appender-ref ref="CHAT_CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- Akka system logging with custom appender -->
+    <logger name="akka" level="INFO" additivity="false">
+        <appender-ref ref="AKKA_CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- Suppress verbose Akka logs -->
+    <logger name="akka.actor.DeadLetterActorRef" level="WARN" />
+    <logger name="akka.event.slf4j.Slf4jLogger" level="WARN" />
+    <logger name="akka.actor.ActorSystemImpl" level="WARN" />
 
 </configuration>

@@ -36,7 +36,7 @@ public class StatefulActor extends AbstractActor {
 
     @Override
     public void preStart() {
-        log.info("WorkerActor {} started with status {}", name, status);
+        log.info("🏗️ Stateful worker '{}' initialized with status: {}", name, status);
     }
 
     @Override
@@ -52,76 +52,73 @@ public class StatefulActor extends AbstractActor {
     }
 
     private void handleAskForHelp(AskForHelpStateful message) {
-        log.info("Received AskForHelp message from {}", getSender().path());
+        log.info("💬 Help request received: '{}'", message.value());
 
         switch (status) {
             case IDLE, AVAILABLE -> {
-                log.info("{}, changing status from {} to WAITING_RESPONSE",
-                    getSelf().path(), status);
+                log.info("🔄 Status transition: {} → WAITING_RESPONSE", status);
                 status = WorkerStatusStateful.WAITING_RESPONSE;
-                log.info("Replying to sender {} with HelpResponse", getSender().path());
+                log.info("✅ Responding with offer to help");
                 getSender().tell(new HelpResponseStateful("I will help you!"), getSelf());
             }
             default -> {
-                log.error("Unexpected AskForHelp message in state {}", status);
+                log.error("❌ Cannot process help request in current status: {}", status);
             }
         }
     }
 
     private void handleHelpResponse(HelpResponseStateful message) {
-        log.info("Received HelpResponse message from {}", getSender().path());
+        log.info("🤝 Help response received: '{}'", message.value());
 
         switch (status) {
             case IDLE, AVAILABLE -> {
-                log.info("{}, changing status from {} to IN_MEETING",
-                    getSelf().path(), status);
+                log.info("🔄 Status transition: {} → IN_MEETING", status);
                 status = WorkerStatusStateful.IN_MEETING;
                 getSender().tell(new SendMeetingLinkStateful(
                     "Can you join in this meeting link ?"), getSelf());
             }
             default -> {
-                log.error("Unexpected HelpResponse message in state {}", status);
+                log.error("❌ Cannot process help response in current status: {}", status);
             }
         }
     }
 
     private void handleSendMeetingLink(SendMeetingLinkStateful message) {
-        log.info("Received SendMeetingLink message from {}", getSender().path());
+        log.info("🔗 Meeting link received: '{}'", message.value());
 
         switch (status) {
             case AVAILABLE, WAITING_RESPONSE -> {
-                log.info("{}, changing status from {} to IN_MEETING",
-                    getSelf().path(), status);
+                log.info("🔄 Status transition: {} → IN_MEETING", status);
                 status = WorkerStatusStateful.IN_MEETING;
                 getSender().tell(new JoinMeetingStateful("Yes, I can join"), getSelf());
             }
             default -> {
-                log.error("Unexpected SendMeetingLink message in state {}", status);
+                log.error("❌ Cannot process meeting link in current status: {}", status);
             }
         }
     }
 
     private void handleJoinMeeting(JoinMeetingStateful message) {
-        log.info("Received JoinMeeting message from {}", getSender().path());
+        log.info("🚪 Join meeting request: '{}'", message.value());
 
         switch (status) {
             case AVAILABLE -> {
-                log.info("{}, changing status from {} to IN_MEETING",
-                    getSelf().path(), status);
+                log.info("🔄 Status transition: {} → IN_MEETING", status);
                 status = WorkerStatusStateful.IN_MEETING;
                 getSender().tell(new JoinMeetingStateful("Joining the meeting"), getSelf());
             }
             case IN_MEETING -> {
-                log.info("{}, is already in meeting", getSelf().path());
+                log.info("ℹ️ Already in meeting - notifying sender");
                 getSender().tell(new InMeetingStateful("Already in the meeting"), getSelf());
             }
             default -> {
-                log.error("Unexpected JoinMeeting message in state {}", status);
+                log.error("❌ Cannot process join meeting request in current status: {}", status);
             }
         }
     }
 
     private void handleUnexpectedMessage(Object message) {
-        log.error("Received unexpected message in state {}: {}", status, message);
+        log.error("⚠️ Unexpected message type '{}' received in status: {}",
+                message.getClass().getSimpleName(), status);
     }
 }

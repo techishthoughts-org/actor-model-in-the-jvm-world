@@ -24,12 +24,12 @@ public class SimpleActorSender extends AbstractActor {
 
     @Override
     public void preStart() {
-        log.info("SimpleActorSender '{}' started", actorName);
+        log.info("🚀 Actor '{}' started and ready to process messages", actorName);
     }
 
     @Override
     public void postStop() {
-        log.info("SimpleActorSender '{}' stopped", actorName);
+        log.info("🛑 Actor '{}' stopped gracefully", actorName);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class SimpleActorSender extends AbstractActor {
     private void handleIntMessage(IntMessage message) {
         long startTime = System.currentTimeMillis();
         try {
-            log.info("[{}] Processing IntMessage: {}", actorName, message);
+            log.info("🔢 Received integer value: {} - Processing completed", message.value());
             recordMetrics(startTime);
         } catch (Exception ex) {
-            log.error(ex, "[{}] Error processing IntMessage: {}", actorName, message);
+            log.error("❌ Failed to process integer message: {} - Error: {}", message, ex.getMessage());
             recordError();
         }
     }
@@ -62,10 +62,10 @@ public class SimpleActorSender extends AbstractActor {
     private void handleStringMessage(StringMessage message) {
         long startTime = System.currentTimeMillis();
         try {
-            log.info("[{}] Processing StringMessage: {}", actorName, message);
+            log.info("📝 Received text message: '{}' - Processing completed", message.value());
             recordMetrics(startTime);
         } catch (Exception ex) {
-            log.error(ex, "[{}] Error processing StringMessage: {}", actorName, message);
+            log.error("❌ Failed to process text message: {} - Error: {}", message, ex.getMessage());
             recordError();
         }
     }
@@ -76,10 +76,10 @@ public class SimpleActorSender extends AbstractActor {
     private void handleDoubleMessage(DoubleMessage message) {
         long startTime = System.currentTimeMillis();
         try {
-            log.info("[{}] Processing DoubleMessage: {}", actorName, message);
+            log.info("🔢 Received decimal value: {} - Processing completed", message.value());
             recordMetrics(startTime);
         } catch (Exception ex) {
-            log.error(ex, "[{}] Error processing DoubleMessage: {}", actorName, message);
+            log.error("❌ Failed to process decimal message: {} - Error: {}", message, ex.getMessage());
             recordError();
         }
     }
@@ -88,8 +88,8 @@ public class SimpleActorSender extends AbstractActor {
      * Handle unexpected messages by logging warning and stopping actor
      */
     private void handleUnexpectedMessage(Object message) {
-        log.warning("[{}] Received unexpected message: {} from {}",
-                   actorName, message, getSender().path());
+        log.warning("⚠️ Unexpected message received: {} from sender: {} - Stopping actor for safety",
+                message.getClass().getSimpleName(), getSender().path().name());
         recordError();
         getContext().stop(getSelf());
     }
@@ -99,13 +99,13 @@ public class SimpleActorSender extends AbstractActor {
      */
     private void recordMetrics(long startTime) {
         long processingTime = System.currentTimeMillis() - startTime;
-        log.debug("[{}] Message processed in {}ms", actorName, processingTime);
+        log.debug("⚡ Message processed in {}ms", processingTime);
     }
 
     /**
      * Record error metrics (would send to metrics collection actor in real system)
      */
     private void recordError() {
-        log.debug("[{}] Error recorded", actorName);
+        log.debug("📊 Error metric recorded for analysis");
     }
 }
