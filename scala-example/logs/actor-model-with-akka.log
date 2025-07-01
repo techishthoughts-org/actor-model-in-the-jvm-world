@@ -77,3 +77,5 @@
 2025-07-01 15:32:02.705 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Alice to room Project-Alpha: Project Alpha is on track!
 2025-07-01 15:32:02.705 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Charlie to room Project-Alpha: Great news! 🎉
 2025-07-01 15:32:05.734 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+2025-07-01 16:53:21.268 [ChatWebSocketSystem-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-07-01 16:53:21.318 [ChatWebSocketSystem-akka.actor.default-dispatcher-6] INFO  demo.chat.ChatSystem - ChatSystem started
