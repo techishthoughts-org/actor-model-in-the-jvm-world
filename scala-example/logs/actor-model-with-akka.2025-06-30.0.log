@@ -1,0 +1,27 @@
+2025-06-30 23:34:18.454 [my-system-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:34:18.481 [my-system-akka.actor.default-dispatcher-5] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+2025-06-30 23:34:38.194 [my-system-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:34:38.234 [my-system-akka.actor.default-dispatcher-4] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+2025-06-30 23:40:48.226 [StatefulActorSpec-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:40:48.227 [StatefulActorSpec-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:40:48.227 [StatefulActorSpec-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:40:48.233 [StatefulActorSpec-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:40:48.329 [SimpleActorAskSpec-akka.actor.default-dispatcher-6] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+2025-06-30 23:41:41.403 [my-system-akka.actor.default-dispatcher-5] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:41:41.446 [my-system-akka.actor.default-dispatcher-9] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+2025-06-30 23:59:49.369 [ActorDemoSystem-akka.actor.default-dispatcher-4] INFO  akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+2025-06-30 23:59:51.441 [ActorDemoSystem-akka.actor.default-dispatcher-4] INFO  demo.chat.ChatSystem - ChatSystem started
+2025-06-30 23:59:51.442 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User created: Alice (user_1751324391441_918)
+2025-06-30 23:59:51.442 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User created: Bob (user_1751324391442_979)
+2025-06-30 23:59:51.442 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User created: Charlie (user_1751324391442_120)
+2025-06-30 23:59:51.444 [ActorDemoSystem-akka.actor.default-dispatcher-4] INFO  demo.chat.ChatSystem - Room created: General (room_1751324391443_543)
+2025-06-30 23:59:51.444 [ActorDemoSystem-akka.actor.default-dispatcher-4] INFO  demo.chat.ChatSystem - Room created: Project-Alpha (room_1751324391444_246)
+2025-06-30 23:59:51.446 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User Alice joined room General
+2025-06-30 23:59:51.447 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User Bob joined room General
+2025-06-30 23:59:51.447 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User Charlie joined room Project-Alpha
+2025-06-30 23:59:51.447 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - User Alice joined room Project-Alpha
+2025-06-30 23:59:51.450 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Alice to room General: Hello everyone! 👋
+2025-06-30 23:59:51.450 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Bob to room General: Hi Alice! How's the project going?
+2025-06-30 23:59:51.450 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Alice to room Project-Alpha: Project Alpha is on track!
+2025-06-30 23:59:51.450 [ActorDemoSystem-akka.actor.default-dispatcher-8] INFO  demo.chat.ChatSystem - Message sent from Charlie to room Project-Alpha: Great news! 🎉
+2025-06-30 23:59:54.475 [ActorDemoSystem-akka.actor.default-dispatcher-4] INFO  akka.actor.CoordinatedShutdown - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
