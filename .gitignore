@@ -24,19 +24,20 @@ replay_pid*
 
 ### Scala ###
 *.tasty
-.bsp/
-.bloop/
-.metals/
+*.bsp/*
+*.bloop/*
+*.metals/*
+
 ### SBT ###
 *project/*
 
 
 ### IntelliJ IDEA ###
-.idea/
+*.idea/*
 *.iws
 *.iml
 *.ipr
-out/
+*.out/*
 
 ### Eclipse ###
 .apt_generated
