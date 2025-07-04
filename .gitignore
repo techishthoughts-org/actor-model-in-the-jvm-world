@@ -126,13 +126,14 @@ jacoco.exec
 *.pid.lock
 
 ### TaskMaster AI ###
-.taskmaster/
 .roo/
 .clinerules/
 .cursor/
 .trae/
 .windsurf/
-.github/
+.bloop/
+.metals/
+.taskmaster/
 .roomodes/
 AGENTS.md
 CLAUDE.md
