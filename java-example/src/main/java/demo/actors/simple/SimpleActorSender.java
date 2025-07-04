@@ -1,6 +1,7 @@
 package demo.actors.simple;
 
 import akka.actor.AbstractActor;
+import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import demo.messages.DoubleMessage;
@@ -21,6 +22,13 @@ public class SimpleActorSender extends AbstractActor {
 
     private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
     private final String actorName = getSelf().path().name();
+
+    /**
+     * Factory method for creating Props for this actor
+     */
+    public static Props props() {
+        return Props.create(SimpleActorSender.class);
+    }
 
     @Override
     public void preStart() {

@@ -28,7 +28,7 @@ public class SimpleActorSenderTest {
 
     @AfterAll
     public void teardown() {
-        TestKit.shutdownActorSystem(system);
+        system.terminate();
         system = null;
     }
 
@@ -36,7 +36,7 @@ public class SimpleActorSenderTest {
     public void testSimpleActorSenderProcessesIntMessage() {
         new TestKit(system) {{
             // Create the actor under test
-            Props props = Props.create(SimpleActorSender.class);
+            Props props = SimpleActorSender.props();
             ActorRef actorRef = system.actorOf(props, "testActorInt");
 
             // Send IntMessage - this is fire-and-forget, so we just verify it doesn't crash
@@ -58,7 +58,7 @@ public class SimpleActorSenderTest {
     public void testSimpleActorSenderProcessesStringMessage() {
         new TestKit(system) {{
             // Create the actor under test
-            Props props = Props.create(SimpleActorSender.class);
+            Props props = SimpleActorSender.props();
             ActorRef actorRef = system.actorOf(props, "testActorString");
 
             // Send StringMessage
@@ -80,7 +80,7 @@ public class SimpleActorSenderTest {
     public void testSimpleActorSenderProcessesDoubleMessage() {
         new TestKit(system) {{
             // Create the actor under test
-            Props props = Props.create(SimpleActorSender.class);
+            Props props = SimpleActorSender.props();
             ActorRef actorRef = system.actorOf(props, "testActorDouble");
 
             // Send DoubleMessage
