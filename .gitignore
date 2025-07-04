@@ -98,6 +98,8 @@ Thumbs.db
 ### Akka ###
 akka.log
 application.log
+.roomodes/*
+*.scala-build/*
 
 ### TaskMaster AI ###
 # Keep TaskMaster configuration and tasks
